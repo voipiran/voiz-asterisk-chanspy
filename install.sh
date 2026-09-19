@@ -115,17 +115,48 @@ if grep -qF "[voipiran-chanspypro]" "$FILE" 2>/dev/null; then
   echo -e "${GREEN}[voipiran-chanspypro] already exists${NC}"
 else
   echo -e "${YELLOW}Appending [voipiran-chanspypro] context${NC}"
+
   cat <<'EOD' | sudo tee -a "$FILE" >/dev/null
 [voipiran-chanspypro]
-;; voipiran.io - Hamed Kouhfallah - Updated for SIP + PJSIP using ExtenSpy (2025)
-;; ExtenSpy: Searches active channels by extension (SIP/PJSIP/any type)
+;; voipiran.io - Hamed Kouhfallah
+;; ChanSpy Pro - SIP / PJSIP compatible
+;; Uses Issabel device database to resolve the actual channel technology.
 
-exten => _*30X.,1,ExtenSpy(${EXTEN:3},Eq)      ;; فقط شنیدن
-exten => _*31X.,1,ExtenSpy(${EXTEN:3},Eqo)     ;; فقط شنیدن (quiet)
-exten => _*32X.,1,ExtenSpy(${EXTEN:3},Eqw)     ;; Whisper به agent
-exten => _*33X.,1,ExtenSpy(${EXTEN:3},EqW)     ;; Private whisper
-exten => _*34X.,1,ExtenSpy(${EXTEN:3},EqB)     ;; Barge-in
-exten => _*35X.,1,ExtenSpy(${EXTEN:3},Eqd)     ;; DTMF switchable
+;; فقط شنیدن
+exten => _*30X.,1,Set(DEV=${DB(AMPUSER/${EXTEN:3}/device)})
+ same => n,Set(DEV=${CUT(DEV,&,1)})
+ same => n,Set(CHAN=${DB(DEVICE/${DEV}/dial)})
+ same => n,ChanSpy(${CHAN},Eq)
+
+;; فقط شنیدن - Only listen to audio coming from this channel
+exten => _*31X.,1,Set(DEV=${DB(AMPUSER/${EXTEN:3}/device)})
+ same => n,Set(DEV=${CUT(DEV,&,1)})
+ same => n,Set(CHAN=${DB(DEVICE/${DEV}/dial)})
+ same => n,ChanSpy(${CHAN},Eqo)
+
+;; Whisper به Agent
+exten => _*32X.,1,Set(DEV=${DB(AMPUSER/${EXTEN:3}/device)})
+ same => n,Set(DEV=${CUT(DEV,&,1)})
+ same => n,Set(CHAN=${DB(DEVICE/${DEV}/dial)})
+ same => n,ChanSpy(${CHAN},Eqw)
+
+;; Private Whisper
+exten => _*33X.,1,Set(DEV=${DB(AMPUSER/${EXTEN:3}/device)})
+ same => n,Set(DEV=${CUT(DEV,&,1)})
+ same => n,Set(CHAN=${DB(DEVICE/${DEV}/dial)})
+ same => n,ChanSpy(${CHAN},EqW)
+
+;; Barge-in
+exten => _*34X.,1,Set(DEV=${DB(AMPUSER/${EXTEN:3}/device)})
+ same => n,Set(DEV=${CUT(DEV,&,1)})
+ same => n,Set(CHAN=${DB(DEVICE/${DEV}/dial)})
+ same => n,ChanSpy(${CHAN},EqB)
+
+;; DTMF switchable
+exten => _*35X.,1,Set(DEV=${DB(AMPUSER/${EXTEN:3}/device)})
+ same => n,Set(DEV=${CUT(DEV,&,1)})
+ same => n,Set(CHAN=${DB(DEVICE/${DEV}/dial)})
+ same => n,ChanSpy(${CHAN},Eqd)
 EOD
 fi
 
