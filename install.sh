@@ -208,9 +208,12 @@ echo -e "${GREEN}Feature codes updated.${NC}"
 # 4) Reload (FreePBX اولویت دارد)
 # ------------------------------
 echo -e "${CYAN}Reloading dialplan...${NC}"
-if command -v fwconsole >/dev/null 2>&1; then
-  sudo fwconsole reload >/dev/null 2>&1 && echo -e "${GREEN}fwconsole reload done.${NC}" || echo -e "${YELLOW}fwconsole reload failed; trying asterisk reload...${NC}"
-fi
-sudo asterisk -rx "dialplan reload" >/dev/null 2>&1 && echo -e "${GREEN}Asterisk dialplan reloaded.${NC}"
+echo -e "${CYAN}Reloading Asterisk dialplan...${NC}"
 
+if sudo asterisk -rx "dialplan reload" >/dev/null 2>&1; then
+    echo -e "${GREEN}Asterisk dialplan reloaded.${NC}"
+else
+    echo -e "${RED}Asterisk dialplan reload failed.${NC}"
+    exit 1
+fi
 echo -e "${GREEN}Installation completed successfully!${NC}"
