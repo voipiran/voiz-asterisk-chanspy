@@ -43,9 +43,9 @@ VOIPIRAN ChanSpy Pro
 
 
 ```
-curl -L -o voipiran_chanspy.zip https://github.com/voipiran/AsteriskChanSpyPro/archive/main.zip \
-&& unzip voipiran_chanspy.zip \
-&& cd AsteriskChanSpyPro-main \
+curl -L -o voiz-asterisk-chanspy.zip https://github.com/voipiran/voiz-asterisk-chanspy/archive/main.zip \
+&& unzip voiz-asterisk-chanspy.zip \
+&& cd voiz-asterisk-chanspy-main \
 && chmod 755 install.sh \
 && ./install.sh -y
 
@@ -78,9 +78,9 @@ Modes included:
 
 Quick Install Command:
 ```
-curl -L -o voipiran_chanspy.zip https://github.com/voipiran/AsteriskChanSpyPro/archive/main.zip \
-&& unzip voipiran_chanspy.zip \
-&& cd AsteriskChanSpyPro-main \
+curl -L -o voiz-asterisk-chanspy.zip https://github.com/voipiran/voiz-asterisk-chanspy/archive/main.zip \
+&& unzip voiz-asterisk-chanspy.zip \
+&& cd voiz-asterisk-chanspy-main \
 && chmod 755 install.sh \
 && ./install.sh -y
 
